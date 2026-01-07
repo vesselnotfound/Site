@@ -141,16 +141,16 @@
             letter-spacing: 0.5px;
         }
 
-        .status-online {
-            background: rgba(33, 212, 253, 0.15);
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
+        .status-soon {
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+            animation: pulse 2s infinite;
         }
 
-        .status-offline {
-            background: rgba(255, 65, 108, 0.15);
-            color: #ff416c;
-            border: 1px solid #ff416c;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         .card-link {
@@ -162,10 +162,8 @@
             font-size: 0.9rem;
             transition: 0.3s;
             border-bottom: 1px dashed transparent;
-        }
-
-        .card-link:hover {
-            border-bottom-color: var(--neon-purple);
+            cursor: not-allowed;
+            opacity: 0.7;
         }
 
         /* Footer */
@@ -174,7 +172,38 @@
             padding: 30px 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             font-size: 0.9rem;
-            opacity: 0.7;
+            opacity: 0.9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .credits {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .discord-icon {
+            background: #5865F2;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .discord-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #5865F2;
         }
 
         /* Efeito de partículas */
@@ -239,15 +268,127 @@
                 opacity: 0;
             }
         }
+
+        /* Tela de Boas-Vindas */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 20, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        .welcome-content {
+            background: linear-gradient(145deg, rgba(15, 15, 25, 0.95), rgba(30, 10, 40, 0.95));
+            border: 2px solid var(--neon-purple);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(183, 33, 255, 0.5);
+            animation: welcome-appear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes welcome-appear {
+            0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        .welcome-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(183, 33, 255, 0.1), transparent);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .welcome-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-close {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 1px;
+        }
+
+        .welcome-close:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Tela de Boas-Vindas -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-content">
+            <h2 class="welcome-title">ECLIPSE LUNAR</h2>
+            <p class="welcome-text">
+                Bem-vindo à central de scripts para a Sala do Futuro.<br>
+                Todos os recursos estão em desenvolvimento ativo.<br>
+                Fique ligado para atualizações em breve!
+            </p>
+            <button class="welcome-close" id="closeWelcome">
+                ENTRAR NA BASE
+            </button>
+        </div>
+    </div>
+
     <div class="particles" id="particles"></div>
 
     <div class="container">
         <header>
             <h1 class="logo">ECLIPSE LUNAR</h1>
-            <p class="subtitle">Scripts otimizados para a Sala do Futuro · ByBot Edition</p>
+            <p class="subtitle">Scripts otimizados para a Sala do Futuro · Em breve</p>
         </header>
 
         <main>
@@ -258,83 +399,66 @@
 
         <footer>
             <p>Uso educacional · Atualizado via GitHub Mobile · Eclipse Lunar © 2025</p>
+            <div class="credits">
+                <span>by Vessel</span>
+                <a href="https://discord.gg/fwhzTXAzax" target="_blank" class="discord-icon" title="Entre no nosso Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
         </footer>
     </div>
 
     <script>
-        // Dados dos scripts
+        // Dados dos scripts - APENAS ECLIPSE LUNAR
         const scripts = [
             {
                 title: "Tarefas SP",
                 icon: "fas fa-tasks",
                 desc: "Automatização completa do sistema de tarefas.",
-                status: "online",
-                link: "https://crimsonzerohub.xyz/tarefas",
-                category: "eclipse"
+                status: "soon",
+                link: "https://crimsonzerohub.xyz/tarefas"
             },
             {
                 title: "Expansão Noturna",
                 icon: "fas fa-moon",
                 desc: "Expansão de funcionalidades para acesso noturno.",
-                status: "online",
-                link: "https://crimsonzerohub.xyz/expansao",
-                category: "eclipse"
+                status: "soon",
+                link: "https://crimsonzerohub.xyz/expansao"
             },
             {
                 title: "Leia SP",
                 icon: "fas fa-book-open",
                 desc: "Otimização de leitura e análise de textos.",
-                status: "online",
-                link: "https://crimsonzerohub.xyz/leiasp",
-                category: "eclipse"
+                status: "soon",
+                link: "https://crimsonzerohub.xyz/leiasp"
             },
             {
                 title: "Khan Academy",
                 icon: "fas fa-graduation-cap",
                 desc: "Integração avançada com plataforma Khan.",
-                status: "online",
-                link: "https://crimsonzerohub.xyz/khan",
-                category: "eclipse"
+                status: "soon",
+                link: "https://crimsonzerohub.xyz/khan"
             },
             {
                 title: "Alura",
                 icon: "fas fa-code",
                 desc: "Scripts personalizados para Alura Courses.",
-                status: "online",
-                link: "https://crimsonzerohub.xyz/alura",
-                category: "eclipse"
+                status: "soon",
+                link: "https://crimsonzerohub.xyz/alura"
             },
             {
                 title: "Redação SP",
                 icon: "fas fa-pen-fancy",
                 desc: "Ferramentas para redação automática e revisão.",
-                status: "offline",
-                link: "#",
-                category: "destroyer"
+                status: "soon",
+                link: "https://crimsonzerohub.xyz/redacao"
             },
             {
                 title: "Prepara SP",
                 icon: "fas fa-brain",
                 desc: "Preparação intensiva com IA generativa.",
-                status: "online",
-                link: "https://crimsonzerohub.xyz/preparasp",
-                category: "eclipse"
-            },
-            {
-                title: "SPeak",
-                icon: "fas fa-comment-dots",
-                desc: "Otimização de exercícios de speaking.",
-                status: "offline",
-                link: "#",
-                category: "destroyer"
-            },
-            {
-                title: "Matific",
-                icon: "fas fa-calculator",
-                desc: "Dashboard avançado para matemática.",
-                status: "online",
-                link: "https://matific.cupiditys.lol/dashboard",
-                category: "destroyer"
+                status: "soon",
+                link: "https://crimsonzerohub.xyz/preparasp"
             }
         ];
 
@@ -344,19 +468,15 @@
         scripts.forEach(script => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.setAttribute('data-category', script.category);
-            
-            const statusClass = script.status === 'online' ? 'status-online' : 'status-offline';
-            const statusText = script.status === 'online' ? 'ONLINE' : 'OFFLINE';
             
             card.innerHTML = `
                 <div class="card-icon"><i class="${script.icon}"></i></div>
                 <h3 class="card-title">${script.title}</h3>
                 <p class="card-desc">${script.desc}</p>
-                <span class="card-status ${statusClass}">${statusText}</span>
+                <span class="card-status status-soon">EM BREVE</span>
                 <br>
-                <a href="${script.link}" target="_blank" class="card-link">
-                    ${script.status === 'online' ? 'Acessar Script →' : 'Indisponível'}
+                <a href="#" class="card-link" onclick="return false;">
+                    Disponível em breve →
                 </a>
             `;
             
@@ -375,6 +495,17 @@
                 
                 this.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 600);
+                
+                // Feedback de em breve
+                if (!this.classList.contains('clicked')) {
+                    this.classList.add('clicked');
+                    const originalTitle = this.querySelector('.card-title').textContent;
+                    this.querySelector('.card-title').textContent = 'Em Desenvolvimento...';
+                    setTimeout(() => {
+                        this.querySelector('.card-title').textContent = originalTitle;
+                        this.classList.remove('clicked');
+                    }, 1500);
+                }
             });
             
             grid.appendChild(card);
@@ -392,9 +523,9 @@
             particlesContainer.appendChild(particle);
         }
 
-        // Efeito de digitação no título (opcional)
+        // Efeito de digitação no título
         const logo = document.querySelector('.logo');
-        const originalText = logo.textContent;
+        const originalText = "ECLIPSE LUNAR";
         logo.textContent = '';
         let i = 0;
         function typeWriter() {
@@ -404,7 +535,41 @@
                 setTimeout(typeWriter, 80);
             }
         }
-        setTimeout(typeWriter, 500);
+
+        // Controle da tela de boas-vindas
+        const welcomeOverlay = document.getElementById('welcomeOverlay');
+        const closeWelcomeBtn = document.getElementById('closeWelcome');
+
+        // Mostrar tela de boas-vindas com delay
+        setTimeout(() => {
+            welcomeOverlay.classList.remove('hidden');
+            typeWriter();
+        }, 300);
+
+        // Fechar tela de boas-vindas
+        closeWelcomeBtn.addEventListener('click', () => {
+            welcomeOverlay.classList.add('hidden');
+            // Efeito sonoro opcional (descomente se quiser)
+            // const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3');
+            // audio.volume = 0.3;
+            // audio.play();
+        });
+
+        // Fechar com ESC também
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !welcomeOverlay.classList.contains('hidden')) {
+                welcomeOverlay.classList.add('hidden');
+            }
+        });
+
+        // Discord icon hover effect
+        const discordIcon = document.querySelector('.discord-icon');
+        discordIcon.addEventListener('mouseenter', () => {
+            discordIcon.innerHTML = '<i class="fab fa-discord"></i> ENTRE!';
+        });
+        discordIcon.addEventListener('mouseleave', () => {
+            discordIcon.innerHTML = '<i class="fab fa-discord"></i>';
+        });
     </script>
 </body>
 </html>
