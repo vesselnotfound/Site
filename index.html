@@ -7,18 +7,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;500;700&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-purple: #b721ff;
             --neon-blue: #21d4fd;
-            --neon-pink: #ff2e8c;
             --dark-bg: #0a0a14;
-            --card-bg: linear-gradient(145deg, rgba(20, 15, 35, 0.9), rgba(10, 5, 25, 0.95));
-            --text-glow: rgba(183, 33, 255, 0.8);
-            --neon-glow: 0 0 20px rgba(183, 33, 255, 0.5),
-                        0 0 40px rgba(33, 212, 253, 0.3),
-                        0 0 60px rgba(183, 33, 255, 0.2);
+            --card-bg: rgba(15, 15, 25, 0.85);
+            --text-glow: rgba(183, 33, 255, 0.7);
         }
 
         * {
@@ -34,127 +30,62 @@
             min-height: 100vh;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 0% 0%, rgba(33, 212, 253, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 100% 0%, rgba(183, 33, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 50% 100%, rgba(255, 46, 140, 0.05) 0%, transparent 50%);
-            background-attachment: fixed;
-        }
-
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                transparent 50%,
-                rgba(0, 0, 0, 0.1) 50%
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 999;
-            opacity: 0.15;
-            animation: scanlines 10s linear infinite;
-        }
-
-        @keyframes scanlines {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
+                radial-gradient(circle at 10% 20%, rgba(33, 212, 253, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(183, 33, 255, 0.05) 0%, transparent 20%);
         }
 
         .container {
-            max-width: 1300px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            position: relative;
         }
 
         /* Header */
         header {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 40px 20px 30px;
             position: relative;
-            overflow: hidden;
-        }
-
-        .header-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 300px;
-            background: radial-gradient(circle, rgba(183, 33, 255, 0.1) 0%, transparent 70%);
-            filter: blur(60px);
-            z-index: -1;
-            animation: pulse-bg 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse-bg {
-            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             font-weight: 900;
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue), var(--neon-pink));
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: var(--neon-glow);
-            margin-bottom: 15px;
-            letter-spacing: 3px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-            border-radius: 3px;
+            text-shadow: 0 0 15px var(--text-glow);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 1.1rem;
+            opacity: 0.85;
             max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            margin: 0 auto 30px;
+            line-height: 1.5;
         }
 
         /* Grid de Cards */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            padding: 30px 0 80px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px 0 50px;
         }
 
         .card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(183, 33, 255, 0.3);
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(183, 33, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            backdrop-filter: blur(15px);
-            box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .card::before {
@@ -164,13 +95,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.1),
-                transparent
-            );
-            transition: left 0.7s ease;
+            background: linear-gradient(90deg, transparent, rgba(183, 33, 255, 0.1), transparent);
+            transition: left 0.7s;
         }
 
         .card:hover::before {
@@ -178,156 +104,106 @@
         }
 
         .card:hover {
-            transform: translateY(-15px) scale(1.03);
+            transform: translateY(-10px) scale(1.02);
             border-color: var(--neon-purple);
             box-shadow: 
-                0 20px 50px rgba(183, 33, 255, 0.4),
-                0 0 80px rgba(33, 212, 253, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+                0 10px 30px rgba(183, 33, 255, 0.25),
+                0 0 40px rgba(33, 212, 253, 0.1);
         }
 
         .card-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 20px currentColor;
-            display: inline-block;
-            transform: translateY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover .card-icon {
-            transform: translateY(-5px);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px currentColor;
         }
 
         .card-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.7rem;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
             color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            letter-spacing: 1px;
         }
 
         .card-desc {
-            font-size: 1rem;
-            opacity: 0.85;
-            margin-bottom: 25px;
-            line-height: 1.6;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 300;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         .card-status {
             display: inline-block;
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-size: 0.9rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
         }
 
         .status-soon {
             background: rgba(255, 193, 7, 0.15);
             color: #ffc107;
             border: 1px solid #ffc107;
-            animation: pulse 2s infinite, neon-glow 3s infinite alternate;
+            animation: pulse 2s infinite;
         }
 
-        @keyframes neon-glow {
-            0% { box-shadow: 0 0 10px rgba(255, 193, 7, 0.3); }
-            100% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.6); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         .card-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
+            display: inline-block;
+            margin-top: 15px;
             color: var(--neon-purple);
             text-decoration: none;
             font-weight: bold;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            transition: 0.3s;
             border-bottom: 1px dashed transparent;
             cursor: not-allowed;
-            opacity: 0.9;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .card-link:hover {
-            color: var(--neon-blue);
-            letter-spacing: 1px;
+            opacity: 0.7;
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 40px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             font-size: 0.9rem;
             opacity: 0.9;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            gap: 15px;
         }
 
         .credits {
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 1.1rem;
-            position: relative;
-            padding: 15px 30px;
-            border-radius: 50px;
-            background: rgba(15, 15, 25, 0.5);
-            border: 1px solid rgba(183, 33, 255, 0.2);
-        }
-
-        .credits span {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
+            gap: 10px;
+            font-size: 1rem;
         }
 
         .discord-icon {
-            background: linear-gradient(45deg, #5865F2, #7289da);
+            background: #5865F2;
             color: white;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.3rem;
+            transition: all 0.3s;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.3);
         }
 
         .discord-icon:hover {
-            transform: scale(1.2) rotate(5deg);
-            box-shadow: 0 10px 25px rgba(88, 101, 242, 0.6);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #5865F2;
         }
 
         /* Efeito de partículas */
@@ -343,39 +219,27 @@
 
         .particle {
             position: absolute;
-            width: 3px;
-            height: 3px;
+            width: 2px;
+            height: 2px;
             background: var(--neon-blue);
             border-radius: 50%;
-            opacity: 0;
+            opacity: 0.5;
             animation: float 8s infinite linear;
         }
 
         @keyframes float {
-            0% { 
-                transform: translateY(100vh) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { 
-                transform: translateY(-100px) translateX(100px) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-100vh) translateX(100px); }
         }
 
         /* Responsividade */
         @media (max-width: 768px) {
             .grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 25px;
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 20px;
             }
             .logo {
-                font-size: 2.5rem;
-                letter-spacing: 2px;
-            }
-            .header-bg {
-                filter: blur(40px);
+                font-size: 2.2rem;
             }
         }
 
@@ -384,161 +248,117 @@
                 padding: 15px;
             }
             .card {
-                padding: 25px;
-            }
-            .logo {
-                font-size: 2rem;
+                padding: 20px;
             }
         }
 
-        /* Ripple effect melhorado */
+        /* Ripple effect */
         .ripple {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(183, 33, 255, 0.6), transparent 70%);
+            background: rgba(183, 33, 255, 0.4);
             transform: scale(0);
-            animation: ripple-animation 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: ripple-animation 0.6s linear;
             pointer-events: none;
         }
 
         @keyframes ripple-animation {
             to {
-                transform: scale(3);
+                transform: scale(4);
                 opacity: 0;
             }
         }
 
-        /* Tela de Boas-Vindas Aprimorada */
+        /* Tela de Boas-Vindas */
         .welcome-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 10, 20, 0.98);
+            background: rgba(10, 10, 20, 0.95);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             opacity: 1;
-            transition: opacity 1s ease;
-            backdrop-filter: blur(5px);
+            transition: opacity 0.8s ease;
         }
 
         .welcome-content {
-            background: linear-gradient(145deg, 
-                rgba(20, 15, 35, 0.95), 
-                rgba(10, 5, 25, 0.98)
-            );
-            border: 2px solid transparent;
-            border-radius: 25px;
-            padding: 50px 40px;
-            max-width: 550px;
+            background: linear-gradient(145deg, rgba(15, 15, 25, 0.95), rgba(30, 10, 40, 0.95));
+            border: 2px solid var(--neon-purple);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
             width: 90%;
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 
-                0 0 60px rgba(183, 33, 255, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: welcome-appear 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 50px rgba(183, 33, 255, 0.5);
+            animation: welcome-appear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes welcome-appear {
+            0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
         }
 
         .welcome-content::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, 
-                var(--neon-purple), 
-                var(--neon-blue), 
-                var(--neon-pink), 
-                var(--neon-blue)
-            );
-            border-radius: 27px;
-            z-index: -1;
-            animation: border-rotate 4s linear infinite;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(183, 33, 255, 0.1), transparent);
+            animation: rotate 10s linear infinite;
         }
 
-        @keyframes border-rotate {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        @keyframes welcome-appear {
-            0% { 
-                transform: scale(0.7) rotateX(-30deg);
-                opacity: 0;
-            }
-            100% { 
-                transform: scale(1) rotateX(0);
-                opacity: 1;
-            }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .welcome-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue), var(--neon-pink));
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
             z-index: 2;
-            text-shadow: var(--neon-glow);
-            letter-spacing: 2px;
         }
 
         .welcome-text {
-            font-size: 1.2rem;
-            line-height: 1.7;
-            margin-bottom: 35px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
             opacity: 0.9;
             position: relative;
             z-index: 2;
-            font-family: 'JetBrains Mono', monospace;
         }
 
         .welcome-close {
             background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.1rem;
+            padding: 12px 30px;
+            font-size: 1rem;
             font-family: 'Orbitron', sans-serif;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s;
             position: relative;
             z-index: 2;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(183, 33, 255, 0.3);
-            overflow: hidden;
-        }
-
-        .welcome-close::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s ease;
+            letter-spacing: 1px;
         }
 
         .welcome-close:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(183, 33, 255, 0.5);
-            letter-spacing: 3px;
-        }
-
-        .welcome-close:hover::before {
-            left: 100%;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--neon-purple);
         }
 
         .hidden {
@@ -548,9 +368,6 @@
     </style>
 </head>
 <body>
-    <!-- Efeito Scanlines -->
-    <div class="scanlines"></div>
-
     <!-- Tela de Boas-Vindas -->
     <div class="welcome-overlay" id="welcomeOverlay">
         <div class="welcome-content">
@@ -561,7 +378,7 @@
                 Fique ligado para atualizações em breve!
             </p>
             <button class="welcome-close" id="closeWelcome">
-                Acessar Base
+                ENTRAR NA BASE
             </button>
         </div>
     </div>
@@ -570,9 +387,8 @@
 
     <div class="container">
         <header>
-            <div class="header-bg"></div>
             <h1 class="logo">ECLIPSE LUNAR</h1>
-            <p class="subtitle">Scripts otimizados para a Sala do Futuro · Em desenvolvimento</p>
+            <p class="subtitle">Scripts otimizados para a Sala do Futuro · Em breve</p>
         </header>
 
         <main>
@@ -598,46 +414,162 @@
             {
                 title: "Tarefas SP",
                 icon: "fas fa-tasks",
-                desc: "Automatização completa do sistema de tarefas com IA integrada.",
+                desc: "Automatização completa do sistema de tarefas.",
                 status: "soon",
                 link: "https://crimsonzerohub.xyz/tarefas"
             },
             {
                 title: "Expansão Noturna",
                 icon: "fas fa-moon",
-                desc: "Expansão de funcionalidades para acesso noturno premium.",
+                desc: "Expansão de funcionalidades para acesso noturno.",
                 status: "soon",
                 link: "https://crimsonzerohub.xyz/expansao"
             },
             {
                 title: "Leia SP",
                 icon: "fas fa-book-open",
-                desc: "Otimização avançada de leitura e análise textual inteligente.",
+                desc: "Otimização de leitura e análise de textos.",
                 status: "soon",
                 link: "https://crimsonzerohub.xyz/leiasp"
             },
             {
                 title: "Khan Academy",
                 icon: "fas fa-graduation-cap",
-                desc: "Integração profunda com plataforma Khan usando API custom.",
+                desc: "Integração avançada com plataforma Khan.",
                 status: "soon",
                 link: "https://crimsonzerohub.xyz/khan"
             },
             {
                 title: "Alura",
                 icon: "fas fa-code",
-                desc: "Scripts personalizados para Alura Courses com automação.",
+                desc: "Scripts personalizados para Alura Courses.",
                 status: "soon",
                 link: "https://crimsonzerohub.xyz/alura"
             },
             {
                 title: "Redação SP",
                 icon: "fas fa-pen-fancy",
-                desc: "Ferramentas de redação automática com correção em tempo real.",
+                desc: "Ferramentas para redação automática e revisão.",
                 status: "soon",
                 link: "https://crimsonzerohub.xyz/redacao"
             },
             {
                 title: "Prepara SP",
                 icon: "fas fa-brain",
-                desc: "Preparação
+                desc: "Preparação intensiva com IA generativa.",
+                status: "soon",
+                link: "https://crimsonzerohub.xyz/preparasp"
+            }
+        ];
+
+        // Renderizar cards
+        const grid = document.getElementById('cardsGrid');
+        
+        scripts.forEach(script => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            card.innerHTML = `
+                <div class="card-icon"><i class="${script.icon}"></i></div>
+                <h3 class="card-title">${script.title}</h3>
+                <p class="card-desc">${script.desc}</p>
+                <span class="card-status status-soon">EM BREVE</span>
+                <br>
+                <a href="#" class="card-link" onclick="return false;">
+                    Disponível em breve →
+                </a>
+            `;
+            
+            // Efeito ripple
+            card.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+                
+                // Feedback de em breve
+                if (!this.classList.contains('clicked')) {
+                    this.classList.add('clicked');
+                    const originalTitle = this.querySelector('.card-title').textContent;
+                    this.querySelector('.card-title').textContent = 'Em Desenvolvimento...';
+                    setTimeout(() => {
+                        this.querySelector('.card-title').textContent = originalTitle;
+                        this.classList.remove('clicked');
+                    }, 1500);
+                }
+            });
+            
+            grid.appendChild(card);
+        });
+
+        // Gerar partículas
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 40; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.top = Math.random() * 100 + 'vh';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.opacity = Math.random() * 0.5 + 0.2;
+            particlesContainer.appendChild(particle);
+        }
+
+        // Efeito de digitação no título
+        const logo = document.querySelector('.logo');
+        const originalText = "ECLIPSE LUNAR";
+        logo.textContent = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < originalText.length) {
+                logo.textContent += originalText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 80);
+            }
+        }
+
+        // Controle da tela de boas-vindas
+        const welcomeOverlay = document.getElementById('welcomeOverlay');
+        const closeWelcomeBtn = document.getElementById('closeWelcome');
+
+        // Mostrar tela de boas-vindas com delay
+        setTimeout(() => {
+            welcomeOverlay.classList.remove('hidden');
+            typeWriter();
+        }, 300);
+
+        // Fechar tela de boas-vindas
+        closeWelcomeBtn.addEventListener('click', () => {
+            welcomeOverlay.classList.add('hidden');
+            // Efeito sonoro opcional (descomente se quiser)
+            // const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3');
+            // audio.volume = 0.3;
+            // audio.play();
+        });
+
+        // Fechar com ESC também
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !welcomeOverlay.classList.contains('hidden')) {
+                welcomeOverlay.classList.add('hidden');
+            }
+        });
+
+        // Discord icon hover effect
+        const discordIcon = document.querySelector('.discord-icon');
+        discordIcon.addEventListener('mouseenter', () => {
+            discordIcon.innerHTML = '<i class="fab fa-discord"></i> ENTRE!';
+        });
+        discordIcon.addEventListener('mouseleave', () => {
+            discordIcon.innerHTML = '<i class="fab fa-discord"></i>';
+        });
+    </script>
+</body>
+</html>
