@@ -1,338 +1,47 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eclipse Lunar · Sala do Futuro</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root{--purple:#b721ff;--blue:#21d4fd;--bg:#0a0a14;--card:rgba(15,15,25,0.85);--glow:rgba(183,33,255,0.7)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:var(--bg);font-family:'Exo 2',sans-serif;color:#eee;min-height:100vh;overflow-x:hidden}
-        #preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);display:flex;justify-content:center;align-items:center;z-index:9999}
-        .loader{width:50px;height:50px;border:3px solid transparent;border-top:3px solid var(--purple);border-radius:50%;animation:spin 1s linear infinite}
-        @keyframes spin{100%{transform:rotate(360deg)}}
-        .hidden{display:none!important}
-        .container{max-width:1200px;margin:0 auto;padding:20px}
-        header{text-align:center;padding:40px 20px 30px}
-        .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:15px}
-        .visitor-counter{background:rgba(15,15,25,0.7);padding:8px 15px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:.9rem;border:1px solid rgba(183,33,255,.3);display:flex;align-items:center;gap:8px;backdrop-filter:blur(5px)}
-        .visitor-counter i{color:var(--purple)}
-        .logo{font-family:'Orbitron',sans-serif;font-size:2.8rem;font-weight:900;background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 15px var(--glow);margin-bottom:10px;letter-spacing:1px}
-        .subtitle{font-size:1.1rem;opacity:.85;max-width:600px;margin:0 auto 30px;line-height:1.5;min-height:60px}
-        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;padding:20px 0 50px}
-        .card{background:var(--card);border-radius:16px;padding:25px;border:1px solid rgba(183,33,255,.2);transition:all .4s;position:relative;overflow:hidden;cursor:pointer;backdrop-filter:blur(10px)}
-        .card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(183,33,255,.1),transparent);transition:left .7s}
-        .card:hover::before{left:100%}
-        .card:hover{transform:translateY(-10px)scale(1.02);border-color:var(--purple);box-shadow:0 10px 30px rgba(183,33,255,.25),0 0 40px rgba(33,212,253,.1)}
-        .card-icon{font-size:2.5rem;margin-bottom:15px;color:var(--blue);text-shadow:0 0 10px currentColor}
-        .card-title{font-family:'Orbitron',sans-serif;font-size:1.5rem;margin-bottom:10px;color:#fff}
-        .card-desc{font-size:.95rem;opacity:.8;margin-bottom:20px;line-height:1.5}
-        .card-status{display:inline-block;padding:5px 12px;border-radius:20px;font-size:.85rem;font-weight:bold;letter-spacing:.5px;background:rgba(255,193,7,.15);color:#ffc107;border:1px solid #ffc107;animation:pulse 2s infinite}
-        @keyframes pulse{50%{opacity:.7}}
-        .card-link{display:inline-block;margin-top:15px;color:var(--purple);text-decoration:none;font-weight:bold;font-size:.9rem;border-bottom:1px dashed transparent;cursor:not-allowed;opacity:.7}
-        .float-btn{position:fixed;bottom:30px;right:30px;width:50px;height:50px;background:linear-gradient(45deg,var(--purple),var(--blue));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;cursor:pointer;z-index:100;opacity:0;transform:translateY(20px);transition:all .3s;box-shadow:0 5px 20px rgba(183,33,255,.4);border:none}
-        .float-btn.show{opacity:1;transform:translateY(0)}
-        .float-btn:hover{transform:scale(1.1)translateY(-5px);box-shadow:0 10px 30px rgba(183,33,255,.6)}
-        footer{text-align:center;padding:30px 20px;border-top:1px solid rgba(255,255,255,.05);font-size:.9rem;opacity:.9;display:flex;flex-direction:column;align-items:center;gap:15px}
-        .credits{display:flex;align-items:center;gap:10px;font-size:1rem}
-        .discord-icon{background:#5865F2;color:white;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;cursor:pointer;text-decoration:none}
-        .discord-icon:hover{transform:scale(1.1);box-shadow:0 0 20px #5865F2}
-        .particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1}
-        .particle{position:absolute;width:2px;height:2px;background:var(--blue);border-radius:50%;opacity:.5;animation:float 8s infinite linear}
-        @keyframes float{100%{transform:translateY(-100vh)translateX(100px)}}
-        @media (max-width:768px){.grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}.logo{font-size:2.2rem}.header-top{justify-content:center}.float-btn{bottom:20px;right:20px;width:45px;height:45px}}
-        @media (max-width:480px){.container{padding:15px}.card{padding:20px}.visitor-counter{font-size:.8rem;padding:6px 12px}}
-        .welcome-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,20,.95);display:flex;justify-content:center;align-items:center;z-index:9999}
-        .welcome-content{background:linear-gradient(145deg,rgba(15,15,25,.95),rgba(30,10,40,.95));border:2px solid var(--purple);border-radius:20px;padding:40px;max-width:500px;width:90%;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 50px rgba(183,33,255,.5);animation:welcome .8s}
-        @keyframes welcome{0%{transform:scale(.5)rotate(-5deg);opacity:0}100%{transform:scale(1)rotate(0);opacity:1}}
-        .welcome-title{font-family:'Orbitron',sans-serif;font-size:2.5rem;background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:15px}
-        .welcome-text{font-size:1.1rem;line-height:1.6;margin-bottom:25px;opacity:.9}
-        .welcome-close{background:linear-gradient(90deg,var(--purple),var(--blue));color:white;border:none;padding:12px 30px;font-size:1rem;font-family:'Orbitron',sans-serif;border-radius:50px;cursor:pointer;letter-spacing:1px}
-        .welcome-close:hover{transform:scale(1.05);box-shadow:0 0 20px var(--purple)}
-        .notification{position:fixed;top:20px;right:20px;background:rgba(15,15,25,.9);padding:12px 20px;border-radius:10px;border-left:4px solid var(--blue);font-size:.85rem;display:flex;align-items:center;gap:10px;z-index:1000;backdrop-filter:blur(10px);transform:translateX(120%);transition:transform .3s;box-shadow:0 5px 15px rgba(0,0,0,0.3)}
-        .notification.show{transform:translateX(0)}
-        .notification i{color:var(--blue);animation:pulse 2s infinite}
-        .cursor-blink{animation:blink .7s infinite}
-        @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-    </style>
-</head>
-<body>
-    <div id="preloader"><div class="loader"></div></div>
-    <div class="notification hidden" id="notification">
-        <i class="fas fa-sync-alt"></i>
-        <span id="notificationText"></span>
-    </div>
-    <button class="float-btn" id="floatBtn" title="Voltar ao topo"><i class="fas fa-chevron-up"></i></button>
-    <div class="welcome-overlay hidden" id="welcomeOverlay">
-        <div class="welcome-content">
-            <h2 class="welcome-title">ECLIPSE LUNAR</h2>
-            <p class="welcome-text">Bem-vindo à central de scripts para a Sala do Futuro.<br>Todos os recursos estão em desenvolvimento ativo.<br>Fique ligado para atualizações em breve!</p>
-            <button class="welcome-close" id="closeWelcome">ENTRAR NA BASE</button>
-        </div>
-    </div>
-    <div class="particles" id="particles"></div>
-    <div class="container">
-        <header>
-            <div class="header-top">
-                <div class="visitor-counter"><i class="fas fa-eye"></i><span id="visitCount">0 total | 0 hoje</span></div>
-                <button id="themeToggle" class="visitor-counter" title="Alternar tema"><i class="fas fa-palette"></i><span>Neon</span></button>
-                <button id="copyUrl" class="visitor-counter" title="Copiar link do site"><i class="fas fa-link"></i><span>Copiar</span></button>
-            </div>
-            <h1 class="logo" id="logo"></h1>
-            <p class="subtitle" id="subtitle"></p>
-        </header>
-        <main>
-            <div class="grid" id="cardsGrid"></div>
-            <!-- NOVO: Seção de estatísticas -->
-            <div class="visitor-counter" style="margin:30px auto;justify-content:center;width:fit-content">
-                <i class="fas fa-chart-line"></i>
-                <span id="statsText">Estatísticas: </span>
-            </div>
-        </main>
-        <footer>
-            <p>Uso educacional · Atualizado via GitHub Mobile · Eclipse Lunar © 2025</p>
-            <div class="credits">
-                <span>by Vessel</span>
-                <a href="https://discord.gg/fwhzTXAzax" target="_blank" class="discord-icon" title="Discord"><i class="fab fa-discord"></i></a>
-                <button id="reloadBtn" class="discord-icon" style="background:var(--purple)" title="Recarregar"><i class="fas fa-redo"></i></button>
-                <button id="shareBtn" class="discord-icon" style="background:#25D366" title="Compartilhar"><i class="fas fa-share-alt"></i></button>
-            </div>
-            <!-- NOVO: Online agora -->
-            <div class="visitor-counter" style="margin-top:10px">
-                <i class="fas fa-user"></i>
-                <span id="onlineCount">1 online</span>
-            </div>
-        </footer>
-    </div>
-    <script>
-        // ========== SISTEMA DE NOTIFICAÇÃO ==========
-        function showNotification(text, duration=3000) {
-            const notif = document.getElementById('notification');
-            document.getElementById('notificationText').textContent = text;
-            notif.classList.remove('hidden');
-            notif.classList.add('show');
-            setTimeout(() => {
-                notif.classList.remove('show');
-                setTimeout(() => notif.classList.add('hidden'), 300);
-            }, duration);
-        }
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Eclipse Lunar · Sala do Futuro</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;500;700&display=swap" rel="stylesheet"><style>
+:root{--purple:#b721ff;--blue:#21d4fd;--bg:#0a0a14;--card:rgba(15,15,25,0.85);--glow:rgba(183,33,255,0.7)}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);font-family:'Exo 2',sans-serif;color:#eee;min-height:100vh;overflow-x:hidden}#preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);display:flex;justify-content:center;align-items:center;z-index:9999}.loader{width:50px;height:50px;border:3px solid transparent;border-top:3px solid var(--purple);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{100%{transform:rotate(360deg)}}.hidden{display:none!important}.container{max-width:1200px;margin:0 auto;padding:20px}header{text-align:center;padding:40px 20px 30px}.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:15px}.visitor-counter{background:rgba(15,15,25,0.7);padding:8px 15px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:.9rem;border:1px solid rgba(183,33,255,.3);display:flex;align-items:center;gap:8px;backdrop-filter:blur(5px)}.visitor-counter i{color:var(--purple)}.logo{font-family:'Orbitron',sans-serif;font-size:2.8rem;font-weight:900;background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 15px var(--glow);margin-bottom:10px;letter-spacing:1px}.subtitle{font-size:1.1rem;opacity:.85;max-width:600px;margin:0 auto 30px;line-height:1.5;min-height:60px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;padding:20px 0 50px}.card{background:var(--card);border-radius:16px;padding:25px;border:1px solid rgba(183,33,255,.2);transition:all .4s;position:relative;overflow:hidden;cursor:pointer;backdrop-filter:blur(10px)}.card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(183,33,255,.1),transparent);transition:left .7s}.card:hover::before{left:100%}.card:hover{transform:translateY(-10px)scale(1.02);border-color:var(--purple);box-shadow:0 10px 30px rgba(183,33,255,.25),0 0 40px rgba(33,212,253,.1)}.card-icon{font-size:2.5rem;margin-bottom:15px;color:var(--blue);text-shadow:0 0 10px currentColor}.card-title{font-family:'Orbitron',sans-serif;font-size:1.5rem;margin-bottom:10px;color:#fff}.card-desc{font-size:.95rem;opacity:.8;margin-bottom:20px;line-height:1.5}.card-status{display:inline-block;padding:5px 12px;border-radius:20px;font-size:.85rem;font-weight:bold;letter-spacing:.5px;background:rgba(255,193,7,.15);color:#ffc107;border:1px solid #ffc107;animation:pulse 2s infinite}@keyframes pulse{50%{opacity:.7}}.card-link{display:inline-block;margin-top:15px;color:var(--purple);text-decoration:none;font-weight:bold;font-size:.9rem;border-bottom:1px dashed transparent;cursor:not-allowed;opacity:.7}.float-btn{position:fixed;bottom:30px;right:30px;width:50px;height:50px;background:linear-gradient(45deg,var(--purple),var(--blue));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:1.2rem;cursor:pointer;z-index:100;opacity:0;transform:translateY(20px);transition:all .3s;box-shadow:0 5px 20px rgba(183,33,255,.4);border:none}.float-btn.show{opacity:1;transform:translateY(0)}.float-btn:hover{transform:scale(1.1)translateY(-5px);box-shadow:0 10px 30px rgba(183,33,255,.6)}footer{text-align:center;padding:30px 20px;border-top:1px solid rgba(255,255,255,.05);font-size:.9rem;opacity:.9;display:flex;flex-direction:column;align-items:center;gap:15px}.credits{display:flex;align-items:center;gap:10px;font-size:1rem}.discord-icon{background:#5865F2;color:white;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;cursor:pointer;text-decoration:none}.discord-icon:hover{transform:scale(1.1);box-shadow:0 0 20px #5865F2}.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1}.particle{position:absolute;width:2px;height:2px;background:var(--blue);border-radius:50%;opacity:.5;animation:float 8s infinite linear}@keyframes float{100%{transform:translateY(-100vh)translateX(100px)}}@media (max-width:768px){.grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}.logo{font-size:2.2rem}.header-top{justify-content:center}.float-btn{bottom:20px;right:20px;width:45px;height:45px}}@media (max-width:480px){.container{padding:15px}.card{padding:20px}.visitor-counter{font-size:.8rem;padding:6px 12px}}.welcome-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,20,.95);display:flex;justify-content:center;align-items:center;z-index:9999}.welcome-content{background:linear-gradient(145deg,rgba(15,15,25,.95),rgba(30,10,40,.95));border:2px solid var(--purple);border-radius:20px;padding:40px;max-width:500px;width:90%;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 50px rgba(183,33,255,.5);animation:welcome .8s}@keyframes welcome{0%{transform:scale(.5)rotate(-5deg);opacity:0}100%{transform:scale(1)rotate(0);opacity:1}}.welcome-title{font-family:'Orbitron',sans-serif;font-size:2.5rem;background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:15px}.welcome-text{font-size:1.1rem;line-height:1.6;margin-bottom:25px;opacity:.9}.welcome-close{background:linear-gradient(90deg,var(--purple),var(--blue));color:white;border:none;padding:12px 30px;font-size:1rem;font-family:'Orbitron',sans-serif;border-radius:50px;cursor:pointer;letter-spacing:1px}.welcome-close:hover{transform:scale(1.05);box-shadow:0 0 20px var(--purple)}.notification{position:fixed;top:20px;right:20px;background:rgba(15,15,25,.9);padding:12px 20px;border-radius:10px;border-left:4px solid var(--blue);font-size:.85rem;display:flex;align-items:center;gap:10px;z-index:1000;backdrop-filter:blur(10px);transform:translateX(120%);transition:transform .3s;box-shadow:0 5px 15px rgba(0,0,0,0.3)}.notification.show{transform:translateX(0)}.notification i{color:var(--blue);animation:pulse 2s infinite}.cursor-blink{animation:blink .7s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}</style></head><body>
+<div id="preloader"><div class="loader"></div></div>
+<div class="notification hidden" id="notification"><i class="fas fa-sync-alt"></i><span id="notificationText"></span></div>
+<button class="float-btn" id="floatBtn" title="Voltar ao topo"><i class="fas fa-chevron-up"></i></button>
+<div class="welcome-overlay hidden" id="welcomeOverlay"><div class="welcome-content"><h2 class="welcome-title">ECLIPSE LUNAR</h2><p class="welcome-text">Bem-vindo à central de scripts para a Sala do Futuro.<br>Todos os recursos estão em desenvolvimento ativo.<br>Fique ligado para atualizações em breve!</p><button class="welcome-close" id="closeWelcome">ENTRAR NA BASE</button></div></div>
+<div class="particles" id="particles"></div>
+<div class="container"><header><div class="header-top"><div class="visitor-counter"><i class="fas fa-eye"></i><span id="visitCount">0 total | 0 hoje</span></div><button id="themeToggle" class="visitor-counter" title="Alternar tema"><i class="fas fa-palette"></i><span>Neon</span></button><button id="copyUrl" class="visitor-counter" title="Copiar link do site"><i class="fas fa-link"></i><span>Copiar</span></button></div><h1 class="logo" id="logo"></h1><p class="subtitle" id="subtitle"></p></header><main><div class="grid" id="cardsGrid"></div><div class="visitor-counter" style="margin:30px auto;justify-content:center;width:fit-content"><i class="fas fa-chart-line"></i><span id="statsText">Estatísticas: </span></div></main><footer><p>Uso educacional · Atualizado via GitHub Mobile · Eclipse Lunar © 2025</p><div class="credits"><span>by Vessel</span><a href="https://discord.gg/fwhzTXAzax" target="_blank" class="discord-icon" title="Discord"><i class="fab fa-discord"></i></a><button id="reloadBtn" class="discord-icon" style="background:var(--purple)" title="Recarregar"><i class="fas fa-redo"></i></button><button id="shareBtn" class="discord-icon" style="background:#25D366" title="Compartilhar"><i class="fas fa-share-alt"></i></button></div><div class="visitor-counter" style="margin-top:10px"><i class="fas fa-user"></i><span id="onlineCount">1 online</span></div></footer></div>
+<script>
+// SISTEMA DE NOTIFICAÇÃO
+function showNotification(t,d=3000){const n=document.getElementById('notification');document.getElementById('notificationText').textContent=t;n.classList.remove('hidden');n.classList.add('show');setTimeout(()=>{n.classList.remove('show');setTimeout(()=>n.classList.add('hidden'),300)},d)}
 
-        // ========== CONTADOR DE VISITAS MELHORADO ==========
-        function updateCounter() {
-            let today = new Date().toDateString();
-            let last = localStorage.getItem('lastVisit');
-            let total = parseInt(localStorage.getItem('totalVisits') || '0');
-            let daily = parseInt(localStorage.getItem('dailyVisits') || '0');
-            
-            if(last !== today) {
-                total++;
-                daily = 1;
-                localStorage.setItem('totalVisits', total);
-                localStorage.setItem('dailyVisits', daily);
-                localStorage.setItem('lastVisit', today);
-                // Notificação de nova visita do dia
-                showNotification('✨ Nova visita registrada!');
-            } else {
-                daily++;
-                localStorage.setItem('dailyVisits', daily);
-            }
-            
-            // Atualiza contador
-            document.getElementById('visitCount').textContent = `${total.toLocaleString()} total | ${daily} hoje`;
-            
-            // Atualiza estatísticas
-            document.getElementById('statsText').textContent = 
-                `Estatísticas: ${total} visitas | ${daily} hoje | ${Math.floor(total/7)} semana`;
-            
-            // Simula usuários online (entre 1-5)
-            const online = 1 + Math.floor(Math.random() * 4);
-            document.getElementById('onlineCount').textContent = `${online} online agora`;
-            
-            // Mostra notificação a cada 10 visitas
-            if(total % 10 === 0 && total > 0) {
-                setTimeout(() => showNotification('🎉 Você é o visitante número ' + total + '!'), 2000);
-            }
-        }
+// CONTADOR DE VISITAS
+function updateCounter(){let t=new Date().toDateString();let l=localStorage.getItem('lastVisit');let o=parseInt(localStorage.getItem('totalVisits')||'0');let d=parseInt(localStorage.getItem('dailyVisits')||'0');if(l!==t){o++;d=1;localStorage.setItem('totalVisits',o);localStorage.setItem('dailyVisits',d);localStorage.setItem('lastVisit',t);showNotification('✨ Nova visita registrada!')}else{d++;localStorage.setItem('dailyVisits',d)}document.getElementById('visitCount').textContent=`${o.toLocaleString()} total | ${d} hoje`;document.getElementById('statsText').textContent=`Estatísticas: ${o} visitas | ${d} hoje | ${Math.floor(o/7)} semana`;const n=1+Math.floor(Math.random()*4);document.getElementById('onlineCount').textContent=`${n} online agora`;if(o%10===0&&o>0){setTimeout(()=>showNotification('🎉 Você é o visitante número '+o+'!'),2000)}}
 
-        // ========== DADOS DOS SCRIPTS ==========
-        const scripts = [
-            {title:"Tarefas SP", icon:"fas fa-tasks", desc:"Automatização completa do sistema de tarefas."},
-            {title:"Expansão Noturna", icon:"fas fa-moon", desc:"Expansão de funcionalidades para acesso noturno."},
-            {title:"Leia SP", icon:"fas fa-book-open", desc:"Otimização de leitura e análise de textos."},
-            {title:"Khan Academy", icon:"fas fa-graduation-cap", desc:"Integração avançada com plataforma Khan."},
-            {title:"Alura", icon:"fas fa-code", desc:"Scripts personalizados para Alura Courses."},
-            {title:"Redação SP", icon:"fas fa-pen-fancy", desc:"Ferramentas para redação automática e revisão."},
-            {title:"Prepara SP", icon:"fas fa-brain", desc:"Preparação intensiva com IA generativa."}
-        ];
+// DADOS DOS SCRIPTS
+const scripts=[{title:"Tarefas SP",icon:"fas fa-tasks",desc:"Automatização completa do sistema de tarefas."},{title:"Expansão Noturna",icon:"fas fa-moon",desc:"Expansão de funcionalidades para acesso noturno."},{title:"Leia SP",icon:"fas fa-book-open",desc:"Otimização de leitura e análise de textos."},{title:"Khan Academy",icon:"fas fa-graduation-cap",desc:"Integração avançada com plataforma Khan."},{title:"Alura",icon:"fas fa-code",desc:"Scripts personalizados para Alura Courses."},{title:"Redação SP",icon:"fas fa-pen-fancy",desc:"Ferramentas para redação automática e revisão."},{title:"Prepara SP",icon:"fas fa-brain",desc:"Preparação intensiva com IA generativa."}]
 
-        // ========== RENDERIZAR CARDS OTIMIZADO ==========
-        function renderCards() {
-            const grid = document.getElementById('cardsGrid');
-            grid.innerHTML = '';
-            
-            scripts.forEach((s, i) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.style.animationDelay = `${i * 50}ms`;
-                
-                card.innerHTML = `
-                    <div class="card-icon"><i class="${s.icon}"></i></div>
-                    <h3 class="card-title">${s.title}</h3>
-                    <p class="card-desc">${s.desc}</p>
-                    <span class="card-status">EM BREVE</span><br>
-                    <a href="#" class="card-link">Disponível em breve →</a>
-                `;
-                
-                // Efeito de clique com feedback
-                card.addEventListener('click', function(e) {
-                    // Cria efeito visual
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => this.style.transform = '', 200);
-                    
-                    // Notificação
-                    showNotification(`📁 ${s.title} - Em desenvolvimento`, 1500);
-                    
-                    // Registra cliques
-                    let clicks = localStorage.getItem(`clicks_${s.title}`) || 0;
-                    localStorage.setItem(`clicks_${s.title}`, ++clicks);
-                });
-                
-                grid.appendChild(card);
-            });
-        }
+// RENDERIZAR CARDS
+function renderCards(){const g=document.getElementById('cardsGrid');g.innerHTML='';scripts.forEach((s,i)=>{const c=document.createElement('div');c.className='card';c.style.animationDelay=`${i*50}ms`;c.innerHTML=`<div class="card-icon"><i class="${s.icon}"></i></div><h3 class="card-title">${s.title}</h3><p class="card-desc">${s.desc}</p><span class="card-status">EM BREVE</span><br><a href="#" class="card-link">Disponível em breve →</a>`;c.addEventListener('click',function(){this.style.transform='scale(0.98)';setTimeout(()=>this.style.transform='',200);showNotification(`📁 ${s.title} - Em desenvolvimento`,1500);let k=localStorage.getItem(`clicks_${s.title}`)||0;localStorage.setItem(`clicks_${s.title}`,++k)});g.appendChild(c)})}
 
-        // ========== ANIMAÇÃO DE DIGITAÇÃO MELHORADA ==========
-        function typeEffect(element, text, speed=100, callback) {
-            element.innerHTML = '';
-            let i = 0;
-            const cursor = '<span class="cursor-blink">|</span>';
-            
-            function type() {
-                if(i < text.length) {
-                    element.innerHTML = text.substring(0, i + 1) + cursor;
-                    i++;
-                    setTimeout(type, speed);
-                } else {
-                    element.innerHTML = text;
-                    if(callback) callback();
-                }
-            }
-            type();
-        }
+// ANIMAÇÃO DE DIGITAÇÃO
+function typeEffect(e,t,s=100,c){e.innerHTML='';let i=0;const u='<span class="cursor-blink">|</span>';function n(){if(i<t.length){e.innerHTML=t.substring(0,i+1)+u;i++;setTimeout(n,s)}else{e.innerHTML=t;if(c)c()}}n()}
 
-        // ========== PARTICULAS OTIMIZADAS ==========
-        function genParticles() {
-            const p = document.getElementById('particles');
-            for(let i = 0; i < 25; i++) {
-                const d = document.createElement('div');
-                d.className = 'particle';
-                d.style.cssText = `
-                    left:${Math.random() * 100}vw;
-                    top:${Math.random() * 100}vh;
-                    animation-delay:${Math.random() * 3}s;
-                    opacity:${Math.random() * 0.3 + 0.2};
-                    animation-duration:${Math.random() * 5 + 5}s
-                `;
-                p.appendChild(d);
-            }
-        }
+// PARTICULAS
+function genParticles(){const p=document.getElementById('particles');for(let i=0;i<25;i++){const d=document.createElement('div');d.className='particle';d.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*100}vh;animation-delay:${Math.random()*3}s;opacity:${Math.random()*0.3+0.2};animation-duration:${Math.random()*5+5}s`;p.appendChild(d)}}
 
-        // ========== INICIALIZAÇÃO OTIMIZADA ==========
-        document.addEventListener('DOMContentLoaded', () => {
-            // Preloader mais rápido
-            setTimeout(() => {
-                document.getElementById('preloader').classList.add('hidden');
-            }, 600);
-            
-            // Inicializa sistemas
-            updateCounter();
-            renderCards();
-            genParticles();
-            
-            // Animações
-            typeEffect(document.getElementById('logo'), 'ECLIPSE LUNAR', 120, () => {
-                setTimeout(() => {
-                    typeEffect(document.getElementById('subtitle'), 
-                        'Scripts otimizados para a Sala do Futuro · Em breve', 60);
-                }, 500);
-            });
-            
-            // Welcome screen (só na primeira visita)
-            if(!localStorage.getItem('welcomeShown')) {
-                setTimeout(() => {
-                    document.getElementById('welcomeOverlay').classList.remove('hidden');
-                    localStorage.setItem('welcomeShown', 'true');
-                }, 1000);
-            }
-            
-            // Mostra dica inicial
-            setTimeout(() => {
-                showNotification('💡 Dica: Use Ctrl+R para recarregar os cards', 4000);
-            }, 3000);
-        });
+// INICIALIZAÇÃO
+document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>document.getElementById('preloader').classList.add('hidden'),600);updateCounter();renderCards();genParticles();typeEffect(document.getElementById('logo'),'ECLIPSE LUNAR',120,()=>{setTimeout(()=>{typeEffect(document.getElementById('subtitle'),'Scripts otimizados para a Sala do Futuro · Em breve',60)},500)});if(!localStorage.getItem('welcomeShown')){setTimeout(()=>{document.getElementById('welcomeOverlay').classList.remove('hidden');localStorage.setItem('welcomeShown','true')},1000)}setTimeout(()=>showNotification('💡 Dica: Use Ctrl+R para recarregar os cards',4000),3000)})
 
-        // ========== EVENT LISTENERS OTIMIZADOS ==========
-        
-        // Welcome screen
-        document.getElementById('closeWelcome').addEventListener('click', () => {
-            document.getElementById('welcomeOverlay').classList.add('hidden');
-            showNotification('🚀 Bem-vindo à base!', 2000);
-        });
-
-        // Botão flutuante
-        window.addEventListener('scroll', () => {
-            document.getElementById('floatBtn').classList.toggle('show', window.scrollY > 300);
-        });
-        
-        document.getElementById('floatBtn').addEventListener('click', () => {
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        });
-
-        // Toggle de tema
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            const r = document.documentElement;
-            const t = document.getElementById('themeToggle');
-            
-            if(r.style.getPropertyValue('--purple') === '#00ff88') {
-                r.style.setProperty('--purple', '#b721ff');
-                r.style.setProperty('--blue', '#21d4fd');
-                t.innerHTML = '<i class="fas fa-palette"></i><span>Neon</span>';
-                showNotification('🌙 Tema Neon ativado', 2000);
-            } else {
-                r.style.setProperty('--purple', '#00ff88');
-                r.style.setProperty('--blue', '#ff2e8c');
-                t.innerHTML = '<i class="fas fa-palette"></i><span>Cyber</span>';
-                showNotification('🔮 Tema Cyber ativado', 2000);
-            }
-        });
-
-        // Botão de copiar URL
-        document.getElementById('copyUrl').addEventListener('click', () => {
-            navigator.clipboard.writeText(window.location.href)
-                .then(() => showNotification('📋 Link copiado!', 2000))
-                .catch(() => showNotification('❌ Erro ao copiar', 2000));
-        });
-
-        // Botão de recarregar
-        document.getElementById('reloadBtn').addEventListener('click', () => {
-            const icon = document.getElementById('reloadBtn').querySelector('i');
-            icon.classList.add('fa-spin');
-            setTimeout(() => {
-                icon.classList.remove('fa-spin');
-                renderCards();
-                showNotification('🔄 Cards recarregados', 1500);
-            }, 800);
-        });
-
-        // Botão de compartilhar
-        document.getElementById('shareBtn').addEventListener('click', () => {
-            if(navigator.share) {
-                navigator.share({
-                    title: 'Eclipse Lunar',
-                    text: 'Confira esses scripts incríveis para a Sala do Futuro!',
-                    url: window.location.href
-                });
-            } else {
-                showNotification('📱 Use o botão de compartilhar do seu
+// EVENT LISTENERS
+document.getElementById('closeWelcome').addEventListener('click',()=>{document.getElementById('welcomeOverlay').classList.add('hidden');showNotification('🚀 Bem-vindo à base!',2000)})
+window.addEventListener('scroll',()=>{document.getElementById('floatBtn').classList.toggle('show',window.scrollY>300)})
+document.getElementById('floatBtn').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}))
+document.getElementById('themeToggle').addEventListener('click',()=>{const r=document.documentElement,t=document.getElementById('themeToggle');if(r.style.getPropertyValue('--purple')==='#00ff88'){r.style.setProperty('--purple','#b721ff');r.style.setProperty('--blue','#21d4fd');t.innerHTML='<i class="fas fa-palette"></i><span>Neon</span>';showNotification('🌙 Tema Neon ativado',2000)}else{r.style.setProperty('--purple','#00ff88');r.style.setProperty('--blue','#ff2e8c');t.innerHTML='<i class="fas fa-palette"></i><span>Cyber</span>';showNotification('🔮 Tema Cyber ativado',2000)}})
+document.getElementById('copyUrl').addEventListener('click',()=>{navigator.clipboard.writeText(window.location.href).then(()=>showNotification('📋 Link copiado!',2000)).catch(()=>showNotification('❌ Erro ao copiar',2000))})
+document.getElementById('reloadBtn').addEventListener('click',()=>{const i=document.getElementById('reloadBtn').querySelector('i');i.classList.add('fa-spin');setTimeout(()=>{i.classList.remove('fa-spin');renderCards();showNotification('🔄 Cards recarregados',1500)},800)})
+document.getElementById('shareBtn').addEventListener('click',()=>{if(navigator.share){navigator.share({title:'Eclipse Lunar',text:'Confira esses scripts incríveis para a Sala do Futuro!',url:window.location.href})}else{showNotification('📱 Use o botão de compartilhar do seu navegador',3000)}})
+const d=document.querySelector('.discord-icon[href]');if(d){d.addEventListener('mouseenter',e=>e.target.innerHTML='<i class="fab fa-discord"></i> ENTRE!');d.addEventListener('mouseleave',e=>e.target.innerHTML='<i class="fab fa-discord"></i>')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('welcomeOverlay').classList.add('hidden');if(e.ctrlKey&&e.key==='r'){e.preventDefault();document.getElementById('reloadBtn').click()}if(e.ctrlKey&&e.key==='d'){e.preventDefault();window.open('https://discord.gg/fwhzTXAzax','_blank')}if(e.ctrlKey&&e.key==='c'){e.preventDefault();document.getElementById('copyUrl').click()}if(e.ctrlKey&&e.key==='t'){e.preventDefault();document.getElementById('themeToggle').click()}})
+window.addEventListener('online',()=>showNotification('✅ Conexão restaurada',2000))
+window.addEventListener('offline',()=>showNotification('⚠️ Você está offline',3000))
+setTimeout(()=>{document.querySelectorAll('.particle').forEach(p=>{if(Math.random()>0.7)p.remove()})},30000)
+setInterval(()=>{const o=1+Math.floor(Math.random()*4);document.getElementById('onlineCount').textContent=`${o} online agora`},60000)
+setTimeout(()=>document.getElementById('preloader').classList.add('hidden'),3000)
+</script></body></html>
