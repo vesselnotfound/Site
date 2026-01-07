@@ -72,7 +72,8 @@
                 <div class="visitor-counter"><i class="fas fa-eye"></i><span id="visitCount">Carregando...</span></div>
                 <button id="themeToggle" class="visitor-counter" style="cursor:pointer"><i class="fas fa-palette"></i><span>Neon</span></button>
             </div>
-            <h1 class="logo" id="logo">ECLIPSE LUNAR</h1>
+            <!-- TÍTULO VAZIO - SERÁ PREENCHIDO PELO JAVASCRIPT -->
+            <h1 class="logo" id="logo"></h1>
             <p class="subtitle" id="subtitle"></p>
         </header>
         <main><div class="grid" id="cardsGrid"></div></main>
@@ -147,8 +148,9 @@
             })
         }
 
-        // ANIMAÇÃO DE DIGITAÇÃO
-        function typeEffect(element,text,speed=100){
+        // ANIMAÇÃO DE DIGITAÇÃO DO TÍTULO
+        function typeTitle(element,text,speed=100){
+            element.textContent='' // Garante que comece vazio
             let i=0
             function type(){
                 if(i<text.length){
@@ -158,6 +160,20 @@
                 }
             }
             type()
+        }
+
+        // ANIMAÇÃO DE DIGITAÇÃO DO SUBTÍTULO
+        function typeSubtitle(element,text,speed=50){
+            element.textContent='' // Garante que comece vazio
+            let i=0
+            function type(){
+                if(i<text.length){
+                    element.textContent+=text.charAt(i)
+                    i++
+                    setTimeout(type,speed)
+                }
+            }
+            setTimeout(()=>type(),1200)
         }
 
         // PARTICULAS
@@ -176,8 +192,10 @@
             updateCounter()
             renderCards()
             genParticles()
-            typeEffect(document.getElementById('logo'),'ECLIPSE LUNAR')
-            setTimeout(()=>typeEffect(document.getElementById('subtitle'),'Scripts otimizados para a Sala do Futuro · Em breve'),1200)
+            
+            // AGORA SÓ DIGITA O TÍTULO UMA VEZ
+            typeTitle(document.getElementById('logo'),'ECLIPSE LUNAR')
+            typeSubtitle(document.getElementById('subtitle'),'Scripts otimizados para a Sala do Futuro · Em breve')
             
             // WELCOME SCREEN
             if(!localStorage.getItem('welcomeShown')){
