@@ -34,7 +34,7 @@
                 radial-gradient(circle at 90% 80%, rgba(183, 33, 255, 0.05) 0%, transparent 20%);
         }
 
-        /* Preloader */
+        /* Preloader FIXED */
         #preloader {
             position: fixed;
             top: 0;
@@ -46,7 +46,13 @@
             justify-content: center;
             align-items: center;
             z-index: 99999;
+            opacity: 1;
             transition: opacity 0.5s ease;
+        }
+
+        #preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .loader {
@@ -81,6 +87,13 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         /* Header */
@@ -195,6 +208,16 @@
             overflow: hidden;
             cursor: pointer;
             backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardAppear 0.5s ease forwards;
+        }
+
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .card::before {
@@ -306,6 +329,24 @@
         .float-btn:hover {
             transform: scale(1.1) translateY(-5px);
             box-shadow: 0 10px 30px rgba(183, 33, 255, 0.6);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            z-index: 9999;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            width: 0%;
+            transition: width 0.3s ease;
         }
 
         /* Footer */
@@ -532,7 +573,12 @@
     </style>
 </head>
 <body>
-    <!-- Preloader -->
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Preloader FIXED -->
     <div id="preloader">
         <div class="loader"></div>
     </div>
@@ -572,6 +618,12 @@
                     <i class="fas fa-eye"></i>
                     <span id="visitCount">Carregando...</span>
                 </div>
+                
+                <!-- Adicionei um botão de tema/toggle -->
+                <button id="themeToggle" class="visitor-counter" style="cursor: pointer;">
+                    <i class="fas fa-palette"></i>
+                    <span>Neon Mode</span>
+                </button>
             </div>
             
             <h1 class="logo">ECLIPSE LUNAR</h1>
@@ -591,82 +643,37 @@
                 <a href="https://discord.gg/fwhzTXAzax" target="_blank" class="discord-icon" title="Entre no nosso Discord">
                     <i class="fab fa-discord"></i>
                 </a>
+                <!-- Adicionei botão de reload -->
+                <button id="reloadBtn" class="discord-icon" style="background: var(--neon-purple); margin-left: 10px;" title="Recarregar scripts">
+                    <i class="fas fa-redo"></i>
+                </button>
             </div>
         </footer>
     </div>
 
     <script>
-        // Preloader
-        window.addEventListener('load', () => {
+        // ========== PRELOADER FIXED ==========
+        // Garante que o preloader some mesmo se houver erro
+        function hidePreloader() {
+            const preloader = document.getElementById('preloader');
+            preloader.classList.add('hidden');
             setTimeout(() => {
-                document.getElementById('preloader').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('preloader').style.display = 'none';
-                }, 500);
-            }, 800);
+                preloader.style.display = 'none';
+            }, 500);
+        }
+
+        // Fallback: esconde preloader após 3s mesmo se der erro
+        setTimeout(hidePreloader, 3000);
+
+        // Esconde quando tudo carregar
+        window.addEventListener('load', hidePreloader);
+
+        // Progress Bar no scroll
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
         });
 
-        // Dados dos scripts - APENAS ECLIPSE LUNAR
-        const scripts = [
-            {
-                title: "Tarefas SP",
-                icon: "fas fa-tasks",
-                desc: "Automatização completa do sistema de tarefas.",
-                status: "soon",
-                link: "https://crimsonzerohub.xyz/tarefas"
-            },
-            {
-                title: "Expansão Noturna",
-                icon: "fas fa-moon",
-                desc: "Expansão de funcionalidades para acesso noturno.",
-                status: "soon",
-                link: "https://crimsonzerohub.xyz/expansao"
-            },
-            {
-                title: "Leia SP",
-                icon: "fas fa-book-open",
-                desc: "Otimização de leitura e análise de textos.",
-                status: "soon",
-                link: "https://crimsonzerohub.xyz/leiasp"
-            },
-            {
-                title: "Khan Academy",
-                icon: "fas fa-graduation-cap",
-                desc: "Integração avançada com plataforma Khan.",
-                status: "soon",
-                link: "https://crimsonzerohub.xyz/khan"
-            },
-            {
-                title: "Alura",
-                icon: "fas fa-code",
-                desc: "Scripts personalizados para Alura Courses.",
-                status: "soon",
-                link: "https://crimsonzerohub.xyz/alura"
-            },
-            {
-                title: "Redação SP",
-                icon: "fas fa-pen-fancy",
-                desc: "Ferramentas para redação automática e revisão.",
-                status: "soon",
-                link: "https://crimsonzerohub.xyz/redacao"
-            },
-            {
-                title: "Prepara SP",
-                icon: "fas fa-brain",
-                desc: "Preparação intensiva com IA generativa.",
-                status: "soon",
-                link: "https://crimsonzerohub.xyz/preparasp"
-            }
-        ];
-
-        // Renderizar cards
-        const grid = document.getElementById('cardsGrid');
-        
-        scripts.forEach(script => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            
-            card.innerHTML = `
-                <div class="card-icon"><i class="${script.icon}"></i></div>
-                <h3 class="card-title">${script.title}</h3>
-                <p class="card-desc">$
+ 
