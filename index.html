@@ -34,6 +34,49 @@
                 radial-gradient(circle at 90% 80%, rgba(183, 33, 255, 0.05) 0%, transparent 20%);
         }
 
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--neon-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+
+        .loader::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 2s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -45,6 +88,60 @@
             text-align: center;
             padding: 40px 20px 30px;
             position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .visitor-counter {
+            background: rgba(15, 15, 25, 0.7);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            border: 1px solid rgba(183, 33, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .visitor-counter i {
+            color: var(--neon-purple);
+        }
+
+        .update-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 15, 25, 0.9);
+            padding: 12px 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--neon-blue);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transform: translateX(120%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .update-notification.show {
+            transform: translateX(0);
+        }
+
+        .update-notification i {
+            color: var(--neon-blue);
+            animation: pulse 2s infinite;
         }
 
         .logo {
@@ -66,6 +163,18 @@
             max-width: 600px;
             margin: 0 auto 30px;
             line-height: 1.5;
+            min-height: 60px;
+        }
+
+        .subtitle-typed {
+            border-right: 2px solid var(--neon-purple);
+            padding-right: 5px;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { border-color: var(--neon-purple); }
+            50% { border-color: transparent; }
         }
 
         /* Grid de Cards */
@@ -166,6 +275,39 @@
             opacity: 0.7;
         }
 
+        /* Botão Flutuante */
+        .float-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 20px rgba(183, 33, 255, 0.4);
+            border: none;
+        }
+
+        .float-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .float-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 10px 30px rgba(183, 33, 255, 0.6);
+        }
+
         /* Footer */
         footer {
             text-align: center;
@@ -241,6 +383,24 @@
             .logo {
                 font-size: 2.2rem;
             }
+            .header-top {
+                justify-content: center;
+            }
+            .update-notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                transform: translateY(-100%);
+            }
+            .update-notification.show {
+                transform: translateY(0);
+            }
+            .float-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -249,6 +409,10 @@
             }
             .card {
                 padding: 20px;
+            }
+            .visitor-counter {
+                font-size: 0.8rem;
+                padding: 6px 12px;
             }
         }
 
@@ -368,6 +532,22 @@
     </style>
 </head>
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Notificação de Atualização -->
+    <div class="update-notification" id="updateNotification">
+        <i class="fas fa-sync-alt"></i>
+        <span>Novos scripts em desenvolvimento!</span>
+    </div>
+
+    <!-- Botão Flutuante -->
+    <button class="float-btn" id="floatBtn" title="Voltar ao topo">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <!-- Tela de Boas-Vindas -->
     <div class="welcome-overlay" id="welcomeOverlay">
         <div class="welcome-content">
@@ -387,8 +567,15 @@
 
     <div class="container">
         <header>
+            <div class="header-top">
+                <div class="visitor-counter">
+                    <i class="fas fa-eye"></i>
+                    <span id="visitCount">Carregando...</span>
+                </div>
+            </div>
+            
             <h1 class="logo">ECLIPSE LUNAR</h1>
-            <p class="subtitle">Scripts otimizados para a Sala do Futuro · Em breve</p>
+            <p class="subtitle" id="typedSubtitle"></p>
         </header>
 
         <main>
@@ -409,6 +596,16 @@
     </div>
 
     <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('preloader').style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+
         // Dados dos scripts - APENAS ECLIPSE LUNAR
         const scripts = [
             {
@@ -472,104 +669,4 @@
             card.innerHTML = `
                 <div class="card-icon"><i class="${script.icon}"></i></div>
                 <h3 class="card-title">${script.title}</h3>
-                <p class="card-desc">${script.desc}</p>
-                <span class="card-status status-soon">EM BREVE</span>
-                <br>
-                <a href="#" class="card-link" onclick="return false;">
-                    Disponível em breve →
-                </a>
-            `;
-            
-            // Efeito ripple
-            card.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-                
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.classList.add('ripple');
-                
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-                
-                // Feedback de em breve
-                if (!this.classList.contains('clicked')) {
-                    this.classList.add('clicked');
-                    const originalTitle = this.querySelector('.card-title').textContent;
-                    this.querySelector('.card-title').textContent = 'Em Desenvolvimento...';
-                    setTimeout(() => {
-                        this.querySelector('.card-title').textContent = originalTitle;
-                        this.classList.remove('clicked');
-                    }, 1500);
-                }
-            });
-            
-            grid.appendChild(card);
-        });
-
-        // Gerar partículas
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 40; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.top = Math.random() * 100 + 'vh';
-            particle.style.animationDelay = Math.random() * 5 + 's';
-            particle.style.opacity = Math.random() * 0.5 + 0.2;
-            particlesContainer.appendChild(particle);
-        }
-
-        // Efeito de digitação no título
-        const logo = document.querySelector('.logo');
-        const originalText = "ECLIPSE LUNAR";
-        logo.textContent = '';
-        let i = 0;
-        function typeWriter() {
-            if (i < originalText.length) {
-                logo.textContent += originalText.charAt(i);
-                i++;
-                setTimeout(typeWriter, 80);
-            }
-        }
-
-        // Controle da tela de boas-vindas
-        const welcomeOverlay = document.getElementById('welcomeOverlay');
-        const closeWelcomeBtn = document.getElementById('closeWelcome');
-
-        // Mostrar tela de boas-vindas com delay
-        setTimeout(() => {
-            welcomeOverlay.classList.remove('hidden');
-            typeWriter();
-        }, 300);
-
-        // Fechar tela de boas-vindas
-        closeWelcomeBtn.addEventListener('click', () => {
-            welcomeOverlay.classList.add('hidden');
-            // Efeito sonoro opcional (descomente se quiser)
-            // const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3');
-            // audio.volume = 0.3;
-            // audio.play();
-        });
-
-        // Fechar com ESC também
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !welcomeOverlay.classList.contains('hidden')) {
-                welcomeOverlay.classList.add('hidden');
-            }
-        });
-
-        // Discord icon hover effect
-        const discordIcon = document.querySelector('.discord-icon');
-        discordIcon.addEventListener('mouseenter', () => {
-            discordIcon.innerHTML = '<i class="fab fa-discord"></i> ENTRE!';
-        });
-        discordIcon.addEventListener('mouseleave', () => {
-            discordIcon.innerHTML = '<i class="fab fa-discord"></i>';
-        });
-    </script>
-</body>
-</html>
+                <p class="card-desc">$
